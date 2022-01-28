@@ -1,5 +1,5 @@
 ===========
-pybaselines
+XGN Fork: pybaselines
 ===========
 
 .. image:: https://github.com/derb12/pybaselines/raw/main/docs/images/logo.png
