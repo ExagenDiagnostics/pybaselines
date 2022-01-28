@@ -80,7 +80,15 @@ def collab_pls(data, average_dataset=True, method='asls', method_kwargs=None, **
             weights[i] = fit_params['weights']
         method_kws['weights'] = np.mean(weights.T, 1)
 
-    method_kws['tol'] = np.inf
+    # Why is `tol` being set to `np.inf`?
+    # With `tol=np.inf`, the Whitaker algorithms only go though one optimization iteration
+    # This can be verfied by inspecting the `params` output of this function, where it . . .
+    # . . . can be seen that after fitting with `collab_pls` the `tol_history` is a `list` of `np.array`'s . . .
+    # . . . where the list has length n-spectrum-used-to-colab and each array is n-optimization-iters long. 
+    # When `colab_pls` is used each of the arrays in the list are 1 entry long.
+    #  In contrast the `params` portion of the output of non-colab `aspls`, for example, will contain a `np.array` of decreasing loss . . .
+    # . . . values. 
+    #method_kws['tol'] = np.inf
     baselines = np.empty(dataset.shape)
     params = {'average_weights': method_kws['weights']}
     method = method.lower()
